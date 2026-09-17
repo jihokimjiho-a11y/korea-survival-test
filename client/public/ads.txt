@@ -1,0 +1,2 @@
+# ads.txt placeholder
+# Add the exact Google AdSense publisher record here after receiving it.
