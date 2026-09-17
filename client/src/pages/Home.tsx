@@ -169,8 +169,9 @@ export default function Home() {
     <main className="reference-home">
       <picture>
         <source media="(max-width: 800px)" srcSet="/manus-storage/mobile-reference_424bf9ce.png" />
-        <img src="/manus-storage/desktop-reference_784624d5.png" alt="대한민국 생존 테스트 시작 화면" />
+        <img src="/manus-storage/desktop-reference-clean_67000cab.png" alt="대한민국 생존 테스트 시작 화면" />
       </picture>
+      <img className="floating-sign" src="/manus-storage/sign-board_f2fc7dd9.png" alt="잘 버티고 있어요. 당신은 이미 대단합니다." />
       <button className="reference-start" onClick={start} aria-label="테스트 시작하기" />
     </main>
   );
