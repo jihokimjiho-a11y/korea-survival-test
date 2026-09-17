@@ -151,3 +151,11 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
 @media (min-width: 801px) {
   .result-actions { flex-wrap: wrap; justify-content: center; }
 }
+
+/* All-types index uses a clean white canvas and white image tiles. */
+.all-types-section { background: #fff; padding: 30px 22px 26px; border-radius: 22px; }
+.all-types-grid .type-card { background: #fff; border: 1px solid #eef0ea; box-shadow: 0 5px 16px rgba(46, 59, 47, .06); }
+.all-types-grid .pixel-art { background: #fff; }
+@media (max-width: 800px) {
+  .all-types-section { padding: 24px 10px 20px; border-radius: 18px; }
+}
