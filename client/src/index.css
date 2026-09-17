@@ -159,3 +159,9 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
 @media (max-width: 800px) {
   .all-types-section { padding: 24px 10px 20px; border-radius: 18px; }
 }
+
+/* Keep the supplied pixel characters clean without dark halo shadows. */
+.pixel-art { filter: none; }
+.type-card:hover { transform: none; }
+.all-types-grid .type-card { box-shadow: none; }
+.type-result { box-shadow: none; }
