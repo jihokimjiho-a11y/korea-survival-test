@@ -108,3 +108,30 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
 @media (max-width: 800px) {
   .reference-start { top: 74.2%; width: 51%; height: 5.3%; border-radius: 22px; }
 }
+
+/* Unified card typography and Korean-friendly wrapping */
+.type-card p,
+.type-result p:not(.result-label),
+.all-types-grid .type-card p {
+  word-break: keep-all;
+  overflow-wrap: normal;
+  text-wrap: balance;
+}
+.type-card p { max-width: 94%; margin-left: auto; margin-right: auto; }
+.type-result { padding: 28px 42px; }
+.type-result p:not(.result-label) { max-width: 34em; }
+.all-types-grid .type-card { padding: 14px 10px 18px; }
+@media (max-width: 800px) {
+  .type-grid { column-gap: 12px; row-gap: 16px; }
+  .type-card { min-height: 218px; padding: 12px 10px 16px; }
+  .type-card .type-art { height: 102px; margin-bottom: 2px; }
+  .type-card p { max-width: 100%; padding: 0 4px; font-size: 11.5px; line-height: 1.58; letter-spacing: -0.15px; }
+  .type-card h2 { line-height: 1.25; margin-bottom: 8px; }
+  .type-result { width: min(100%, 360px); padding: 25px 18px 23px; gap: 7px; }
+  .type-result .pixel-art { width: 136px; height: 112px; }
+  .type-result p:not(.result-label) { max-width: 100%; padding: 0 5px; font-size: 13.5px; line-height: 1.62; }
+  .type-result h2 { line-height: 1.3; margin-bottom: 10px; }
+  .all-types-grid { row-gap: 16px; }
+  .all-types-grid .type-card { min-height: 218px; padding: 12px 10px 16px; }
+  .all-types-grid .type-card p { padding: 0 4px; font-size: 11.5px; line-height: 1.58; }
+}
