@@ -67,15 +67,19 @@ function getResult(answers: Answers) {
   return { daysLabel: days === 365 ? "365일+" : `${days}일`, type, kicker: "당신의 대한민국 생존 리포트", detail: type.desc.replace("\\n", " ") };
 }
 
+const characterImages: Record<string, string> = {
+  hard: "/manus-storage/hard_9a497425.png",
+  home: "/manus-storage/home_daabf8e7.png",
+  salary: "/manus-storage/salary_b8a1dc71.png",
+  end: "/manus-storage/end_2c581989.png",
+  shield: "/manus-storage/shield_2282e907.png",
+  sleep: "/manus-storage/sleep_aee3364c.png",
+  stock: "/manus-storage/stock_ff319491.png",
+  mystery: "/manus-storage/mystery_2c6f0b1b.png",
+};
+
 function PixelArt({ art }: { art: string }) {
-  return (
-    <div className={`pixel-art pixel-${art}`} aria-hidden="true">
-      <div className="pixel-shadow" />
-      <div className="pixel-head" />
-      <div className="pixel-body" />
-      <span className="pixel-symbol">{art === "salary" ? "₩" : art === "shield" ? "+" : art === "mystery" ? "?" : art === "sleep" ? "z" : art === "stock" ? "♪" : art === "home" ? "⌂" : art === "end" ? "31" : "!"}</span>
-    </div>
-  );
+  return <img className={`pixel-art pixel-${art}`} src={characterImages[art]} alt="" aria-hidden="true" />;
 }
 
 function Landscape({ mobile = false }: { mobile?: boolean }) {
@@ -96,6 +100,7 @@ export default function Home() {
   const [answers, setAnswers] = useState<Answers>({});
   const [menu, setMenu] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showAllTypes, setShowAllTypes] = useState(false);
 
   const current = useMemo(() => {
     if (step === 1) return classification(answers);
@@ -154,6 +159,8 @@ export default function Home() {
         <div className={`type-result type-${result.type.color}`}><PixelArt art={result.type.art} /><div><p className="result-label">당신의 생존 유형</p><h2>{result.type.icon} {result.type.title}</h2><p>{result.type.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></div></div>
         <blockquote>{result.daysLabel === "오늘" ? "내일의 일은 내일의 내가." : "작은 절약이 큰 생존을 만듭니다."}</blockquote>
         <div className="result-actions"><button className="primary-button" onClick={start}><RotateCcw size={18} /> 다시 테스트하기</button><button className="secondary-button" onClick={copyResult}><Share2 size={18} /> {copied ? "복사했어요" : "결과 공유하기"}</button></div>
+        <button className="all-types-toggle" onClick={() => setShowAllTypes(!showAllTypes)}>{showAllTypes ? "모든 유형 닫기" : "모든 유형 보기"} <ArrowRight size={17} className={showAllTypes ? "rotate-90" : ""} /></button>
+        {showAllTypes && <section className="all-types-section"><p className="all-types-kicker">SURVIVAL TYPE INDEX</p><h2>대한민국 생존 유형 도감</h2><p className="all-types-intro">당신의 결과와 다른 유형들도 한눈에 살펴보세요.</p><div className="type-grid all-types-grid">{types.map((item) => <article className={`type-card card-${item.color}`} key={item.title}><div className="type-art"><PixelArt art={item.art} /></div><h3>{item.title}</h3><p>{item.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></article>)}</div></section>}
       </section><Landscape />
     </main>
   );
@@ -163,11 +170,11 @@ export default function Home() {
       <header className="topbar home-topbar">
         <div className="heart-meter" aria-label="생존력"><span>♥</span><span>♥</span><span className="empty-heart">♥</span></div>
         <div className="brand-lockup desktop-brand"><span>KOREA</span><span>SURVIVAL</span><span>TEST</span></div>
-        <nav><button className="nav-active" onClick={start}>테스트하기</button><button onClick={() => document.getElementById("types")?.scrollIntoView({ behavior: "smooth" })}>유형소개</button><button onClick={copyResult}>랭킹</button><button onClick={copyResult}>공유하기</button></nav>
+        <nav><button className="nav-active" onClick={start}>테스트하기</button><button onClick={copyResult}>랭킹</button><button onClick={copyResult}>공유하기</button></nav>
         <div className="top-slogan"><span>STILL</span><span>SURVIVING</span><span>TOGETHER</span></div>
         <button className="mobile-menu" onClick={() => setMenu(!menu)} aria-label="메뉴"><Menu size={25} /></button>
       </header>
-      {menu && <div className="home-menu"><button onClick={start}>테스트 시작하기</button><button onClick={() => document.getElementById("types")?.scrollIntoView({ behavior: "smooth" })}>생존 유형 보기</button></div>}
+      {menu && <div className="home-menu"><button onClick={start}>테스트 시작하기</button></div>}
       <section className="hero">
         <div className="cloud cloud-one" /><div className="cloud cloud-two" /><div className="cloud cloud-three" />
         <div className="sun">☀</div><div className="bird">파이팅!<span>⌁</span></div>
@@ -175,7 +182,7 @@ export default function Home() {
         <div className="hero-copy"><div className="speech-bubble">오늘도, 잘 버티는 당신을 위해!</div><h1>대한민국 <em>생존</em> 테스트</h1><p className="hero-sub">당신은 대한민국에서 얼마나 버틸 수 있을까요?</p><p className="hero-caption"><span>✦</span> 지금 당신의 생존력을 테스트해보세요! <span>✦</span></p></div>
         <div className="city city-left" /><div className="city city-right" />
       </section>
-      <section id="types" className="types-section"><div className="type-grid">{types.map((item) => <article className={`type-card card-${item.color}`} key={item.title}><div className="type-art"><PixelArt art={item.art} /></div><h2>{item.title}</h2><p>{item.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></article>)}</div><button className="start-button" onClick={start}>테스트 시작하기 <ArrowRight size={22} strokeWidth={3} /></button><p className="micro-copy">SMALL STEPS, BIG SURVIVAL</p></section>
+      <section className="start-cta-section"><button className="start-button" onClick={start}>테스트 시작하기 <ArrowRight size={22} strokeWidth={3} /></button><p className="micro-copy">SMALL STEPS, BIG SURVIVAL</p><p className="start-note">10개의 YES / NO 질문으로 알아보는<br />나의 대한민국 생존력</p></section>
       <Landscape />
     </main>
   );
