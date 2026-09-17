@@ -145,3 +145,9 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
 @media (max-width: 800px) {
   .reference-home .floating-sign { display: none; }
 }
+
+.kakao-share { background: #fee500; border-color: #ead400; color: #241f00; }
+.kakao-share:hover { background: #ffec42; }
+@media (min-width: 801px) {
+  .result-actions { flex-wrap: wrap; justify-content: center; }
+}

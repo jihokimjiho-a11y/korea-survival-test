@@ -95,7 +95,14 @@ function Landscape({ mobile = false }: { mobile?: boolean }) {
 }
 
 export default function Home() {
-  const [view, setView] = useState<"home" | "test" | "result">("home");
+  const [sharedResult] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const art = params.get("result");
+    const days = params.get("days");
+    const type = types.find((item) => item.art === art);
+    return type && days ? { daysLabel: days, type, kicker: "친구가 공유한 대한민국 생존 리포트", detail: type.desc.replace("\\n", " ") } : null;
+  });
+  const [view, setView] = useState<"home" | "test" | "result">(sharedResult ? "result" : "home");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [menu, setMenu] = useState(false);
@@ -108,7 +115,7 @@ export default function Home() {
     return mainQuestions[index];
   }, [step, answers]);
 
-  const result = useMemo(() => getResult(answers), [answers]);
+  const result = useMemo(() => sharedResult ?? getResult(answers), [answers, sharedResult]);
   const progress = Math.min(Math.max(step, 1), 10);
 
   const start = () => { setAnswers({}); setStep(0); setView("test"); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -125,6 +132,14 @@ export default function Home() {
   const copyResult = async () => {
     const text = `대한민국 생존 테스트 결과: ${result.daysLabel} · ${result.type.title}`;
     try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { setCopied(true); setTimeout(() => setCopied(false), 1800); }
+  };
+  const shareResult = async () => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?result=${encodeURIComponent(result.type.art)}&days=${encodeURIComponent(result.daysLabel)}`;
+    const shareData = { title: "대한민국 생존 테스트 결과", text: `나는 ${result.type.title}! 대한민국에서 ${result.daysLabel} 버틸 수 있어요.`, url: shareUrl };
+    if (navigator.share) {
+      try { await navigator.share(shareData); return; } catch { return; }
+    }
+    try { await navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { setCopied(true); setTimeout(() => setCopied(false), 1800); }
   };
 
   if (view === "test") return (
@@ -158,7 +173,7 @@ export default function Home() {
         <div className="days-result"><strong>{result.daysLabel}</strong><span>버틸 수 있어요</span></div>
         <div className={`type-result type-${result.type.color}`}><PixelArt art={result.type.art} /><div><p className="result-label">당신의 생존 유형</p><h2>{result.type.icon} {result.type.title}</h2><p>{result.type.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></div></div>
         <blockquote>{result.daysLabel === "오늘" ? "내일의 일은 내일의 내가." : "작은 절약이 큰 생존을 만듭니다."}</blockquote>
-        <div className="result-actions"><button className="primary-button" onClick={start}><RotateCcw size={18} /> 다시 테스트하기</button><button className="secondary-button" onClick={copyResult}><Share2 size={18} /> {copied ? "복사했어요" : "결과 공유하기"}</button></div>
+        <div className="result-actions"><button className="primary-button" onClick={start}><RotateCcw size={18} /> 다시 테스트하기</button><button className="secondary-button kakao-share" onClick={shareResult}><Share2 size={18} /> 카카오톡으로 공유</button><button className="secondary-button" onClick={copyResult}><Share2 size={18} /> {copied ? "링크를 복사했어요" : "링크 복사하기"}</button></div>
         <button className="all-types-toggle" onClick={() => setShowAllTypes(!showAllTypes)}>{showAllTypes ? "모든 유형 닫기" : "모든 유형 보기"} <ArrowRight size={17} className={showAllTypes ? "rotate-90" : ""} /></button>
         {showAllTypes && <section className="all-types-section"><p className="all-types-kicker">SURVIVAL TYPE INDEX</p><h2>대한민국 생존 유형 도감</h2><p className="all-types-intro">당신의 결과와 다른 유형들도 한눈에 살펴보세요.</p><div className="type-grid all-types-grid">{types.map((item) => <article className={`type-card card-${item.color}`} key={item.title}><div className="type-art"><PixelArt art={item.art} /></div><h3>{item.title}</h3><p>{item.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></article>)}</div></section>}
       </section><Landscape />
