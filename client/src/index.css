@@ -165,3 +165,13 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
 .type-card:hover { transform: none; }
 .all-types-grid .type-card { box-shadow: none; }
 .type-result { box-shadow: none; }
+
+/* Keep every result type panel white so the pixel character remains the focus. */
+.type-result,
+.type-result.type-pink,
+.type-result.type-mint,
+.type-result.type-yellow,
+.type-result.type-blue,
+.type-result.type-lavender,
+.type-result.type-cream,
+.type-result.type-rose { background: #fff; }
