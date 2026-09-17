@@ -68,14 +68,14 @@ function getResult(answers: Answers) {
 }
 
 const characterImages: Record<string, string> = {
-  hard: "/manus-storage/hard_9a497425.png",
-  home: "/manus-storage/home_daabf8e7.png",
-  salary: "/manus-storage/salary_b8a1dc71.png",
-  end: "/manus-storage/end_2c581989.png",
-  shield: "/manus-storage/shield_2282e907.png",
-  sleep: "/manus-storage/sleep_aee3364c.png",
-  stock: "/manus-storage/stock_ff319491.png",
-  mystery: "/manus-storage/mystery_2c6f0b1b.png",
+  hard: "/manus-storage/hard_eef641b0.png",
+  home: "/manus-storage/home_24c10c86.png",
+  salary: "/manus-storage/salary_e742eeca.png",
+  end: "/manus-storage/end_5f6837bc.png",
+  shield: "/manus-storage/shield_4bc28845.png",
+  sleep: "/manus-storage/sleep_88ea1095.png",
+  stock: "/manus-storage/stock_ef216407.png",
+  mystery: "/manus-storage/mystery_bf16c2e4.png",
 };
 
 function PixelArt({ art }: { art: string }) {
