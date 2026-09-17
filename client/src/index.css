@@ -99,3 +99,12 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
   .all-types-section h2 { font-size: 25px; }
   .all-types-grid .type-card { min-height: 211px; }
 }
+
+/* Exact supplied reference landing screen; only the original CTA is interactive. */
+.reference-home { position: relative; width: 100%; min-height: 100vh; overflow: hidden; background: #fcfbf5; line-height: 0; }
+.reference-home picture, .reference-home picture img { display: block; width: 100%; height: auto; }
+.reference-start { position: absolute; z-index: 2; left: 50%; top: 86.2%; width: 20.5%; height: 7.4%; transform: translateX(-50%); border-radius: 34px; background: transparent; cursor: pointer; }
+.reference-start:focus-visible { outline: 4px solid #78b76c; outline-offset: 4px; }
+@media (max-width: 800px) {
+  .reference-start { top: 74.2%; width: 51%; height: 5.3%; border-radius: 22px; }
+}

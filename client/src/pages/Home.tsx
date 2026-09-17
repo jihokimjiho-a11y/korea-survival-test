@@ -166,24 +166,12 @@ export default function Home() {
   );
 
   return (
-    <main className="home-screen">
-      <header className="topbar home-topbar">
-        <div className="heart-meter" aria-label="생존력"><span>♥</span><span>♥</span><span className="empty-heart">♥</span></div>
-        <div className="brand-lockup desktop-brand"><span>KOREA</span><span>SURVIVAL</span><span>TEST</span></div>
-        <nav><button className="nav-active" onClick={start}>테스트하기</button><button onClick={copyResult}>랭킹</button><button onClick={copyResult}>공유하기</button></nav>
-        <div className="top-slogan"><span>STILL</span><span>SURVIVING</span><span>TOGETHER</span></div>
-        <button className="mobile-menu" onClick={() => setMenu(!menu)} aria-label="메뉴"><Menu size={25} /></button>
-      </header>
-      {menu && <div className="home-menu"><button onClick={start}>테스트 시작하기</button></div>}
-      <section className="hero">
-        <div className="cloud cloud-one" /><div className="cloud cloud-two" /><div className="cloud cloud-three" />
-        <div className="sun">☀</div><div className="bird">파이팅!<span>⌁</span></div>
-        <div className="side-note side-left">버티는<br />당신이<br /><b>멋져요!</b> ♥</div><div className="side-note side-right">오늘도<br />잘 살아낸<br />당신에게<br />:)</div>
-        <div className="hero-copy"><div className="speech-bubble">오늘도, 잘 버티는 당신을 위해!</div><h1>대한민국 <em>생존</em> 테스트</h1><p className="hero-sub">당신은 대한민국에서 얼마나 버틸 수 있을까요?</p><p className="hero-caption"><span>✦</span> 지금 당신의 생존력을 테스트해보세요! <span>✦</span></p></div>
-        <div className="city city-left" /><div className="city city-right" />
-      </section>
-      <section className="start-cta-section"><button className="start-button" onClick={start}>테스트 시작하기 <ArrowRight size={22} strokeWidth={3} /></button><p className="micro-copy">SMALL STEPS, BIG SURVIVAL</p><p className="start-note">10개의 YES / NO 질문으로 알아보는<br />나의 대한민국 생존력</p></section>
-      <Landscape />
+    <main className="reference-home">
+      <picture>
+        <source media="(max-width: 800px)" srcSet="/manus-storage/mobile-reference_424bf9ce.png" />
+        <img src="/manus-storage/desktop-reference_784624d5.png" alt="대한민국 생존 테스트 시작 화면" />
+      </picture>
+      <button className="reference-start" onClick={start} aria-label="테스트 시작하기" />
     </main>
   );
 }
