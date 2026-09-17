@@ -203,3 +203,5 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
   .legal-content h1 { margin-bottom: 28px; font-size: 42px; }
   .legal-copy { padding: 25px 20px; border-radius: 16px; font-size: 14px; line-height: 1.8; }
 }
+.email-placeholder a { color: inherit; text-decoration: none; }
+.email-placeholder a:hover { text-decoration: underline; }
