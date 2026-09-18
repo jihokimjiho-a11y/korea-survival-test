@@ -11,6 +11,7 @@ import salaryCharacter from "../assets/images/salary.png";
 import shieldCharacter from "../assets/images/shield.png";
 import sleepCharacter from "../assets/images/sleep.png";
 import stockCharacter from "../assets/images/stock.png";
+import { createResultShareData, shareResult as shareResultWithAdapter } from "../lib/shareResult";
 
 type Answer = "yes" | "no";
 type Answers = Record<string, Answer>;
@@ -145,12 +146,11 @@ export default function Home() {
     try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { setCopied(true); setTimeout(() => setCopied(false), 1800); }
   };
   const shareResult = async () => {
-    const shareUrl = `${window.location.origin}${window.location.pathname}?result=${encodeURIComponent(result.type.art)}&days=${encodeURIComponent(result.daysLabel)}`;
-    const shareData = { title: "대한민국 생존 테스트 결과", text: `나는 ${result.type.title}! 대한민국에서 ${result.daysLabel} 버틸 수 있어요.`, url: shareUrl };
-    if (navigator.share) {
-      try { await navigator.share(shareData); return; } catch { return; }
-    }
-    try { await navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { setCopied(true); setTimeout(() => setCopied(false), 1800); }
+    const shareData = createResultShareData({ origin: window.location.origin, pathname: window.location.pathname, typeArt: result.type.art, daysLabel: result.daysLabel, typeTitle: result.type.title });
+    try {
+      const mode = await shareResultWithAdapter(shareData, { share: navigator.share?.bind(navigator), clipboard: navigator.clipboard });
+      if (mode === "copied") { setCopied(true); setTimeout(() => setCopied(false), 1800); }
+    } catch { return; }
   };
 
   if (view === "test") return (
