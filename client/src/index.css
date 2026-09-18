@@ -203,3 +203,13 @@ button:focus-visible { outline: 3px solid #f3c449; outline-offset: 4px; }
 }
 .email-placeholder a { color: inherit; text-decoration: none; }
 .email-placeholder a:hover { text-decoration: underline; }
+
+/* Compact result actions: equal-width buttons, centered share label, no dark CTA shadow. */
+.result-actions .primary-button { box-shadow: none; }
+.result-actions .primary-button:hover { box-shadow: none; }
+.result-actions .secondary-button { justify-content: center; text-align: center; }
+@media (max-width: 800px) {
+  .result-actions { width: min(100%, 330px); margin-left: auto; margin-right: auto; gap: 10px; }
+  .result-actions .primary-button,
+  .result-actions .secondary-button { width: 100%; min-height: 58px; padding: 11px 16px; box-sizing: border-box; justify-content: center; text-align: center; }
+}
