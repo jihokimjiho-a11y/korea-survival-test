@@ -1,2 +1,1 @@
-# ads.txt placeholder
-# Add the exact Google AdSense publisher record here after receiving it.
+google.com, pub-4843935347682290, DIRECT, f08c47fec0942fa0
