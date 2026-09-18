@@ -1,5 +1,16 @@
 import { useMemo, useState } from "react";
 import { ArrowRight, Check, Menu, RotateCcw, Share2, X } from "lucide-react";
+import desktopReference from "../assets/images/desktop-reference-clean.png";
+import mobileReference from "../assets/images/mobile-reference.png";
+import signBoard from "../assets/images/sign-board.png";
+import endCharacter from "../assets/images/end.png";
+import hardCharacter from "../assets/images/hard.png";
+import homeCharacter from "../assets/images/home.png";
+import mysteryCharacter from "../assets/images/mystery.png";
+import salaryCharacter from "../assets/images/salary.png";
+import shieldCharacter from "../assets/images/shield.png";
+import sleepCharacter from "../assets/images/sleep.png";
+import stockCharacter from "../assets/images/stock.png";
 
 type Answer = "yes" | "no";
 type Answers = Record<string, Answer>;
@@ -68,14 +79,14 @@ function getResult(answers: Answers) {
 }
 
 const characterImages: Record<string, string> = {
-  hard: "/manus-storage/hard_908558e6.png",
-  home: "/manus-storage/home_4fcd2266.png",
-  salary: "/manus-storage/salary_4a38243f.png",
-  end: "/manus-storage/end_a2744988.png",
-  shield: "/manus-storage/shield_cf981268.png",
-  sleep: "/manus-storage/sleep_84ef3dc3.png",
-  stock: "/manus-storage/stock_b9d381e2.png",
-  mystery: "/manus-storage/mystery_3c786c5e.png",
+  hard: hardCharacter,
+  home: homeCharacter,
+  salary: salaryCharacter,
+  end: endCharacter,
+  shield: shieldCharacter,
+  sleep: sleepCharacter,
+  stock: stockCharacter,
+  mystery: mysteryCharacter,
 };
 
 function PixelArt({ art }: { art: string }) {
@@ -183,10 +194,10 @@ export default function Home() {
   return (
     <main className="reference-home">
       <picture>
-        <source media="(max-width: 800px)" srcSet="/manus-storage/mobile-reference_424bf9ce.png" />
-        <img src="/manus-storage/desktop-reference-clean_67000cab.png" alt="대한민국 생존 테스트 시작 화면" />
+        <source media="(max-width: 800px)" srcSet={mobileReference} />
+        <img src={desktopReference} alt="대한민국 생존 테스트 시작 화면" />
       </picture>
-      <img className="floating-sign" src="/manus-storage/sign-board_f2fc7dd9.png" alt="잘 버티고 있어요. 당신은 이미 대단합니다." />
+      <img className="floating-sign" src={signBoard} alt="잘 버티고 있어요. 당신은 이미 대단합니다." />
       <button className="reference-start" onClick={start} aria-label="테스트 시작하기" />
     </main>
   );
