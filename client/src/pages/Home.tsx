@@ -11,7 +11,7 @@ import salaryCharacter from "../assets/images/salary.png";
 import shieldCharacter from "../assets/images/shield.png";
 import sleepCharacter from "../assets/images/sleep.png";
 import stockCharacter from "../assets/images/stock.png";
-import { createResultShareData, shareResult as shareResultWithAdapter } from "../lib/shareResult";
+import { sendKakaoResult } from "../lib/kakaoShare";
 
 type Answer = "yes" | "no";
 type Answers = Record<string, Answer>;
@@ -146,10 +146,18 @@ export default function Home() {
     try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { setCopied(true); setTimeout(() => setCopied(false), 1800); }
   };
   const shareResult = async () => {
-    const shareData = createResultShareData({ origin: window.location.origin, pathname: window.location.pathname, typeArt: result.type.art, daysLabel: result.daysLabel, typeTitle: result.type.title });
+    const sdk = window.Kakao;
+    if (!sdk) return;
     try {
-      const mode = await shareResultWithAdapter(shareData, { share: navigator.share?.bind(navigator), clipboard: navigator.clipboard });
-      if (mode === "copied") { setCopied(true); setTimeout(() => setCopied(false), 1800); }
+      sendKakaoResult({
+        appKey: import.meta.env.VITE_KAKAO_JS_KEY,
+        origin: window.location.origin,
+        pathname: window.location.pathname,
+        typeArt: result.type.art,
+        daysLabel: result.daysLabel,
+        typeTitle: result.type.title,
+        imageUrl: new URL(characterImages[result.type.art], window.location.origin).href,
+      }, sdk);
     } catch { return; }
   };
 
