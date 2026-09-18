@@ -11,7 +11,7 @@ import salaryCharacter from "../assets/images/salary.png";
 import shieldCharacter from "../assets/images/shield.png";
 import sleepCharacter from "../assets/images/sleep.png";
 import stockCharacter from "../assets/images/stock.png";
-import { sendKakaoResult } from "../lib/kakaoShare";
+import { createShareData, shareResult as shareResultWithAdapter } from "../lib/shareResult";
 
 type Answer = "yes" | "no";
 type Answers = Record<string, Answer>;
@@ -141,23 +141,11 @@ export default function Home() {
     else { setView("result"); window.scrollTo({ top: 0, behavior: "smooth" }); }
   };
 
-  const copyResult = async () => {
-    const text = `대한민국 생존 테스트 결과: ${result.daysLabel} · ${result.type.title}`;
-    try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { setCopied(true); setTimeout(() => setCopied(false), 1800); }
-  };
   const shareResult = async () => {
-    const sdk = window.Kakao;
-    if (!sdk) return;
+    const shareData = createShareData({ origin: window.location.origin, pathname: window.location.pathname, typeArt: result.type.art, daysLabel: result.daysLabel, typeIcon: result.type.icon, typeTitle: result.type.title });
     try {
-      sendKakaoResult({
-        appKey: import.meta.env.VITE_KAKAO_JS_KEY,
-        origin: window.location.origin,
-        pathname: window.location.pathname,
-        typeArt: result.type.art,
-        daysLabel: result.daysLabel,
-        typeTitle: result.type.title,
-        imageUrl: new URL(characterImages[result.type.art], window.location.origin).href,
-      }, sdk);
+      const mode = await shareResultWithAdapter(shareData, { share: navigator.share?.bind(navigator), clipboard: navigator.clipboard });
+      if (mode === "copied") { setCopied(true); setTimeout(() => setCopied(false), 1800); }
     } catch { return; }
   };
 
@@ -168,7 +156,7 @@ export default function Home() {
         <div className="progress-wrap"><div className="progress-label">SURVIVAL CHECK <b>{Math.max(1, progress)} / 10</b></div><div className="progress-track"><span style={{ width: `${Math.max(8, progress * 10)}%` }} /></div></div>
         <button className="icon-button" onClick={() => setMenu(!menu)} aria-label="메뉴"><Menu size={24} /></button>
       </header>
-      {menu && <div className="menu-pop"><button onClick={() => setView("home")}>테스트 나가기</button><button onClick={copyResult}>결과 공유하기</button></div>}
+      {menu && <div className="menu-pop"><button onClick={() => setView("home")}>테스트 나가기</button><button onClick={shareResult}>결과 공유하기</button></div>}
       <section className="question-area">
         <div className="question-stamp">{current.classification ? "BONUS CHECK" : `Q${current.id.replace("q", "")}`}</div>
         <div className="speech-bubble small-bubble">오늘도, 잘 버티는 당신을 위해!</div>
@@ -192,7 +180,7 @@ export default function Home() {
         <div className="days-result"><strong>{result.daysLabel}</strong><span>버틸 수 있어요</span></div>
         <div className={`type-result type-${result.type.color}`}><PixelArt art={result.type.art} /><div><p className="result-label">당신의 생존 유형</p><h2>{result.type.icon} {result.type.title}</h2><p>{result.type.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></div></div>
         <blockquote>{result.daysLabel === "오늘" ? "내일의 일은 내일의 내가." : "작은 절약이 큰 생존을 만듭니다."}</blockquote>
-        <div className="result-actions"><button className="primary-button" onClick={start}><RotateCcw size={18} /> 다시 테스트하기</button><button className="secondary-button kakao-share" onClick={shareResult}><Share2 size={18} /> 카카오톡으로 공유</button><button className="secondary-button" onClick={copyResult}><Share2 size={18} /> {copied ? "링크를 복사했어요" : "링크 복사하기"}</button></div>
+        <div className="result-actions"><button className="primary-button" onClick={start}><RotateCcw size={18} /> 다시 테스트하기</button><button className="secondary-button" onClick={shareResult}><Share2 size={18} /> {copied ? "링크가 복사되었습니다." : "공유하기"}</button></div>
         <button className="all-types-toggle" onClick={() => setShowAllTypes(!showAllTypes)}>{showAllTypes ? "모든 유형 닫기" : "모든 유형 보기"} <ArrowRight size={17} className={showAllTypes ? "rotate-90" : ""} /></button>
         {showAllTypes && <section className="all-types-section"><p className="all-types-kicker">SURVIVAL TYPE INDEX</p><h2>대한민국 생존 유형 도감</h2><p className="all-types-intro">당신의 결과와 다른 유형들도 한눈에 살펴보세요.</p><div className="type-grid all-types-grid">{types.map((item) => <article className={`type-card card-${item.color}`} key={item.title}><div className="type-art"><PixelArt art={item.art} /></div><h3>{item.title}</h3><p>{item.desc.split("\\n").map((line) => <span key={line}>{line}<br /></span>)}</p></article>)}</div></section>}
       </section><Landscape />
